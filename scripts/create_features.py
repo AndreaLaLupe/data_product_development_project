@@ -7,14 +7,16 @@ Este módulo contiene funciones para:
 - Selección de características.
 - División en conjuntos de entrenamiento y prueba.
 - Escalado de características numéricas.
-- Manejo del desbalanceo con SMOTE.
+
+Funciones:
+    - preprocess_data: Realiza el preprocesamiento inicial de los datos.
+    - select_features: Selecciona las características relevantes.
+    - scale_and_save_scaler: Escala los datos y guarda el escalador como un artefacto.
 """
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from imblearn.over_sampling import SMOTE
-from collections import Counter
 import joblib
 
 
@@ -59,7 +61,7 @@ def select_features(data: pd.DataFrame, target_col: str, corr_threshold: float =
         pd.DataFrame: Dataset con las características seleccionadas.
     """
     correlation_matrix = data.corr()
-    
+
     # Eliminar características con baja correlación con la variable objetivo
     low_corr_features = correlation_matrix[target_col][correlation_matrix[target_col] < corr_threshold].index
     print(f"Características eliminadas por baja correlación: {list(low_corr_features)}")
@@ -68,11 +70,11 @@ def select_features(data: pd.DataFrame, target_col: str, corr_threshold: float =
     # Eliminar características redundantes altamente correlacionadas
     redundant_features = set()
     for col in correlation_matrix.columns:
-        if col in redundant_features or col == target_col:
+        if col == target_col:
             continue
         high_corr = correlation_matrix[col][correlation_matrix[col] > 0.8].index.drop(col)
         redundant_features.update(high_corr)
-    
+
     print(f"Características eliminadas por alta redundancia: {list(redundant_features)}")
     data = data.drop(columns=redundant_features, errors="ignore")
 
@@ -108,22 +110,3 @@ def scale_and_save_scaler(X_train: pd.DataFrame, X_test: pd.DataFrame, scaler_pa
     print(f"Escalador guardado en {scaler_path}")
 
     return X_train_scaled, X_test_scaled
-
-
-def handle_imbalance(X_train: pd.DataFrame, y_train: pd.Series) -> tuple:
-    """
-    Aplica SMOTE para manejar el desbalance de clases en los datos de entrenamiento.
-
-    Args:
-        X_train (pd.DataFrame): Conjunto de características de entrenamiento.
-        y_train (pd.Series): Etiquetas de entrenamiento.
-
-    Returns:
-        tuple: X_train_resampled, y_train_resampled
-    """
-    smote = SMOTE(random_state=42)
-    X_train_resampled, y_train_resampled = smote.fit_resample(X_train, y_train)
-    print("SMOTE aplicado. Distribución de clases después del balanceo:")
-    print(Counter(y_train_resampled))
-
-    return X_train_resampled, y_train_resampled
