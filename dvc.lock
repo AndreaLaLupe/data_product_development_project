@@ -1,0 +1,26 @@
+schema: '2.0'
+stages:
+  create_features:
+    cmd: python scripts/create_features_and_base_pipeline.py
+    deps:
+    - path: scripts/create_features_and_base_pipeline.py
+      hash: md5
+      md5: 02e1e5d89ed02badf2adc87826bc42ad
+      size: 7091
+    outs:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 9161e3caf0aaf77e4480b63d35136e70
+      size: 112108
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: 972f023fb4fc009495d813360f6e152b
+      size: 447068
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: f94a8036c3eecc9059c5ae4c5166006f
+      size: 895
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 0b7946e30199cd2859bd4413b200e441
+      size: 3547
