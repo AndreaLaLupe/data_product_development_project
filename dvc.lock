@@ -24,3 +24,35 @@ stages:
       hash: md5
       md5: 0b7946e30199cd2859bd4413b200e441
       size: 3547
+  configure_and_fit:
+    cmd: python scripts/configure_and_fit_pipeline.py
+    deps:
+    - path: artifacts/base_pipeline.pkl
+      hash: md5
+      md5: 209238902f4aa8abbbec4ec8530b0df0
+      size: 387
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 9161e3caf0aaf77e4480b63d35136e70
+      size: 112108
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: 972f023fb4fc009495d813360f6e152b
+      size: 447068
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: f94a8036c3eecc9059c5ae4c5166006f
+      size: 895
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 0b7946e30199cd2859bd4413b200e441
+      size: 3547
+    - path: scripts/configure_and_fit_pipeline.py
+      hash: md5
+      md5: 2de1e437568ebc310ebdf97c41c1fef6
+      size: 7203
+    outs:
+    - path: artifacts/best_model_pipeline.pkl
+      hash: md5
+      md5: 2b04ab420f214cc061c6a3eda302c7f8
+      size: 431196
