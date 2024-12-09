@@ -1,0 +1,10 @@
+stages:
+  create_features:
+    cmd: python scripts/create_features_and_base_pipeline.py
+    deps:
+    - scripts/create_features_and_base_pipeline.py
+    outs:
+    - data/processed/X_test.csv
+    - data/processed/X_train.csv
+    - data/processed/y_test.csv
+    - data/processed/y_train.csv

@@ -2,22 +2,19 @@
 Script para cargar y balancear datos desde un archivo CSV.
 
 Este módulo contiene funciones para cargar datos en un DataFrame de pandas,
-inspeccionar su estructura inicial y aplicar SMOTE para balancear las clases.
+inspeccionar su estructura inicial y balancear las clases en una proporción 2:1.
 
 Funciones:
     - load_and_balance_data: Carga los datos desde un archivo CSV, valida su estructura
-      y balancea las clases utilizando SMOTE.
+      y balancea las clases en una proporción 2:1.
 """
 
 import pandas as pd
-from collections import Counter
-from imblearn.over_sampling import SMOTE
-from sklearn.neighbors import NearestNeighbors
 
 
 def load_and_balance_data(file_path: str, balanced_file_path: str) -> pd.DataFrame:
     """
-    Carga los datos desde un archivo CSV, valida su estructura inicial y balancea las clases.
+    Carga los datos desde un archivo CSV, valida su estructura inicial y balancea las clases en una proporción 2:1.
 
     Args:
         file_path (str): Ruta del archivo CSV.
@@ -45,35 +42,30 @@ def load_and_balance_data(file_path: str, balanced_file_path: str) -> pd.DataFra
         if 'Class' not in data.columns:
             raise KeyError("La columna 'Class' es obligatoria para este flujo.")
 
-        # Separar características y variable objetivo
-        X = data.drop(columns=['Class'])
-        y = data['Class']
+        # Separar las clases
+        data_positiva = data[data['Class'] == 1]
+        data_negativa = data[data['Class'] == 0]
 
-        # Verificar la distribución de clases
-        print("\nDistribución de la variable objetivo (antes del balanceo):")
-        print(data['Class'].value_counts(normalize=True))
+        print(f"\nTamaño original de la clase positiva (1): {data_positiva.shape[0]}")
+        print(f"Tamaño original de la clase negativa (0): {data_negativa.shape[0]}")
 
-        # Aplicar SMOTE para balancear las clases
-        print("\nAplicando SMOTE para balancear las clases...")
-        knn_estimator = NearestNeighbors(n_jobs=4)  # Configurar n_jobs en el estimador
-        smote = SMOTE(random_state=42, k_neighbors=knn_estimator)
-        X_resampled, y_resampled = smote.fit_resample(X, y)
+        # Ajustar el tamaño de la clase negativa a 2 veces la clase positiva
+        n_samples_negativa = 2 * data_positiva.shape[0]
+        data_negativa_balanceada = data_negativa.sample(n=n_samples_negativa, random_state=2024, replace=False)
 
-        # Verificar la distribución después de SMOTE
-        print("\nDistribución de la variable objetivo (después de aplicar SMOTE):")
-        print(Counter(y_resampled))
+        # Combinar datos balanceados
+        data_balanceada = pd.concat([data_positiva, data_negativa_balanceada])
+        data_balanceada = data_balanceada.sample(frac=1, random_state=2024).reset_index(drop=True)  # Mezclar aleatoriamente
 
-        # Crear un nuevo DataFrame balanceado
-        data_balanced = pd.concat(
-            [pd.DataFrame(X_resampled, columns=X.columns), pd.DataFrame(y_resampled, columns=['Class'])],
-            axis=1
-        )
+        print(f"\nTamaño final del dataset balanceado: {data_balanceada.shape}")
+        print("\nDistribución de la variable objetivo (después del balanceo):")
+        print(data_balanceada['Class'].value_counts(normalize=True))
 
         # Guardar el dataset balanceado
-        data_balanced.to_csv(balanced_file_path, index=False)
+        data_balanceada.to_csv(balanced_file_path, index=False)
         print(f"\nEl dataset balanceado ha sido guardado en: {balanced_file_path}")
 
-        return data_balanced
+        return data_balanceada
 
     except FileNotFoundError as e:
         print(f"Error: No se encontró el archivo en la ruta {file_path}.")
