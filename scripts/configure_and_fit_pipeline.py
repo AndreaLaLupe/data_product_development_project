@@ -2,11 +2,6 @@
 Script para configurar y entrenar un pipeline de machine learning.
 Selecciona el mejor modelo basado en la métrica F1-Score, ajusta
 hiperparámetros, y guarda el pipeline ajustado en artefactos.
-
-Requisitos:
-- Cumplimiento del estándar PEP8.
-- Calificación mínima de 8.5 en Pylint.
-
 """
 
 import os
@@ -110,6 +105,20 @@ def ajustar_hiperparametros(model, model_name, x_train, y_train):
     return model
 
 
+def guardar_modelo(model, artifacts_path):
+    """
+    Guardar el modelo ajustado por separado.
+
+    Args:
+        model: El modelo ajustado.
+        artifacts_path (str): Ruta donde guardar el modelo.
+    """
+    model_path = os.path.join(artifacts_path, "best_model.pkl")
+    with open(model_path, "wb") as f:
+        pickle.dump(model, f)
+    print(f"\nModelo guardado en: {model_path}")
+
+
 def validar_pipeline(pipeline, x_train):
     """
     Validar columnas esperadas por el pipeline y ajustar pasos inválidos.
@@ -142,10 +151,10 @@ def main():
     """
     # Configuración inicial
     project_path = os.getcwd()
-    data_processed_path = os.path.join(project_path, "..", "data", "processed")
-    artifacts_path = os.path.join(project_path, "..", "artifacts")
+    data_processed_path = os.path.join(project_path, "data", "processed")
+    artifacts_path = os.path.join(project_path, "artifacts")
     pipeline_path = os.path.join(artifacts_path, "base_pipeline.pkl")
-    model_path = os.path.join(artifacts_path, "best_model_pipeline.pkl")
+    model_pipeline_path = os.path.join(artifacts_path, "best_model_pipeline.pkl")
 
     # Cargar datos
     x_train, y_train, x_test, y_test = cargar_datos(data_processed_path)
@@ -155,6 +164,9 @@ def main():
 
     # Ajustar hiperparámetros si es necesario
     best_model = ajustar_hiperparametros(best_model, best_model_name, x_train, y_train)
+
+    # Guardar el mejor modelo
+    guardar_modelo(best_model, artifacts_path)
 
     # Cargar y validar pipeline base
     print("\nCargando pipeline base...")
@@ -173,7 +185,7 @@ def main():
 
     # Guardar pipeline ajustado
     print("\nGuardando el pipeline ajustado...")
-    with open(model_path, "wb") as f:
+    with open(model_pipeline_path, "wb") as f:
         pickle.dump(pipeline, f)
 
     # Evaluar pipeline ajustado

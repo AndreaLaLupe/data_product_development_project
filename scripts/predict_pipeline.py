@@ -6,7 +6,8 @@ import mlflow
 from datetime import datetime
 
 # Configuración inicial
-PROJECT_PATH = os.path.abspath(os.path.join(os.getcwd(), ".."))
+#PROJECT_PATH = os.path.abspath(os.path.join(os.getcwd(), ".."))
+PROJECT_PATH = os.getcwd()
 DATA_PROCESSED_PATH = os.path.join(PROJECT_PATH, "data", "processed")
 PREDICTIONS_PATH = os.path.join(PROJECT_PATH, "data", "predictions")
 ARTIFACTS_PATH = os.path.join(PROJECT_PATH, "artifacts")

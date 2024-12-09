@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/0ffa1c968ec846dbbc4c73c9e8ff98bb/artifacts
+end_time: 1733712483900
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: 0ffa1c968ec846dbbc4c73c9e8ff98bb
+run_name: learned-lynx-46
+run_uuid: 0ffa1c968ec846dbbc4c73c9e8ff98bb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733712483837
+status: 3
+tags: []
+user_id: hp i7
