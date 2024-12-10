@@ -129,7 +129,7 @@ def main():
     # Configuración inicial
     project_path = os.getcwd()
     raw_data_path = os.path.join(project_path, "data", "interim", "creditcard_balanced.csv")
-    artifacts_path = os.path.join(project_path, "..", "artifacts")
+    artifacts_path = os.path.join(project_path, "artifacts")
     processed_data_path = os.path.join(project_path, "data", "processed")
     config_path = os.path.join(project_path, "pipeline.cfg")
 

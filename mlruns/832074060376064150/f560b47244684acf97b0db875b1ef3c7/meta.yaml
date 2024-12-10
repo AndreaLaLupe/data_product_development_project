@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/f560b47244684acf97b0db875b1ef3c7/artifacts
+end_time: 1733846438124
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: f560b47244684acf97b0db875b1ef3c7
+run_name: suave-crane-280
+run_uuid: f560b47244684acf97b0db875b1ef3c7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733846438045
+status: 3
+tags: []
+user_id: hp i7

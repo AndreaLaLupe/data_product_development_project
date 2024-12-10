@@ -150,7 +150,7 @@ def main():
     guardar el modelo ajustado y evaluar su desempeño.
     """
     # Configuración inicial
-    project_path = os.getcwd()
+    project_path = os.path.abspath(os.path.join(os.getcwd())) 
     data_processed_path = os.path.join(project_path, "data", "processed")
     artifacts_path = os.path.join(project_path, "artifacts")
     pipeline_path = os.path.join(artifacts_path, "base_pipeline.pkl")

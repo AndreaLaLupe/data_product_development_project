@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/6f33a2144f184a298540cd37d6309c68/artifacts
+end_time: 1733846416038
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: 6f33a2144f184a298540cd37d6309c68
+run_name: dashing-kit-744
+run_uuid: 6f33a2144f184a298540cd37d6309c68
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733846415928
+status: 3
+tags: []
+user_id: hp i7
