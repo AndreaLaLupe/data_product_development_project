@@ -1,0 +1,83 @@
+schema: '2.0'
+stages:
+  create_features:
+    cmd: python scripts/create_features_and_base_pipeline.py
+    deps:
+    - path: scripts/create_features_and_base_pipeline.py
+      hash: md5
+      md5: ce542dd494ccd87e72323ed7b4831210
+      size: 7085
+    outs:
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 9161e3caf0aaf77e4480b63d35136e70
+      size: 112108
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: 972f023fb4fc009495d813360f6e152b
+      size: 447068
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: f94a8036c3eecc9059c5ae4c5166006f
+      size: 895
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 0b7946e30199cd2859bd4413b200e441
+      size: 3547
+  configure_and_fit:
+    cmd: python scripts/configure_and_fit_pipeline.py
+    deps:
+    - path: artifacts/base_pipeline.pkl
+      hash: md5
+      md5: 209238902f4aa8abbbec4ec8530b0df0
+      size: 387
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 9161e3caf0aaf77e4480b63d35136e70
+      size: 112108
+    - path: data/processed/X_train.csv
+      hash: md5
+      md5: 972f023fb4fc009495d813360f6e152b
+      size: 447068
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: f94a8036c3eecc9059c5ae4c5166006f
+      size: 895
+    - path: data/processed/y_train.csv
+      hash: md5
+      md5: 0b7946e30199cd2859bd4413b200e441
+      size: 3547
+    - path: scripts/configure_and_fit_pipeline.py
+      hash: md5
+      md5: a6bae63a548d763cbdf239f871b00823
+      size: 7235
+    outs:
+    - path: artifacts/best_model_pipeline.pkl
+      hash: md5
+      md5: 2b04ab420f214cc061c6a3eda302c7f8
+      size: 431196
+  predict:
+    cmd: python scripts/prediction_pipeline.py
+    deps:
+    - path: artifacts/best_model_pipeline.pkl
+      hash: md5
+      md5: 2b04ab420f214cc061c6a3eda302c7f8
+      size: 431196
+    - path: data/processed/X_test.csv
+      hash: md5
+      md5: 9161e3caf0aaf77e4480b63d35136e70
+      size: 112108
+    - path: data/processed/y_test.csv
+      hash: md5
+      md5: f94a8036c3eecc9059c5ae4c5166006f
+      size: 895
+    - path: scripts/prediction_pipeline.py
+      hash: md5
+      md5: 0aba27eae97941e5f4c157f55bd3464d
+      size: 4118
+    outs:
+    - path: data/predictions
+      hash: md5
+      md5: d9c219c6393b7e81d1a3b071f70fc414.dir
+      size: 1508
+      nfiles: 1

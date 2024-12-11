@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/410bdc71151c405682f14c8a916463e1/artifacts
+end_time: 1733712572701
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: 410bdc71151c405682f14c8a916463e1
+run_name: merciful-swan-252
+run_uuid: 410bdc71151c405682f14c8a916463e1
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733712572633
+status: 3
+tags: []
+user_id: hp i7

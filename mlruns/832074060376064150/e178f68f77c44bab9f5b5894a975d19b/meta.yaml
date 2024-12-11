@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/e178f68f77c44bab9f5b5894a975d19b/artifacts
+end_time: 1733847567892
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: e178f68f77c44bab9f5b5894a975d19b
+run_name: carefree-grouse-907
+run_uuid: e178f68f77c44bab9f5b5894a975d19b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733847567816
+status: 3
+tags: []
+user_id: hp i7

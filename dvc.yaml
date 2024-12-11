@@ -1,0 +1,30 @@
+stages:
+  create_features:
+    cmd: python scripts/create_features_and_base_pipeline.py
+    deps:
+    - scripts/create_features_and_base_pipeline.py
+    outs:
+    - data/processed/X_test.csv
+    - data/processed/X_train.csv
+    - data/processed/y_test.csv
+    - data/processed/y_train.csv
+  configure_and_fit:
+    cmd: python scripts/configure_and_fit_pipeline.py
+    deps:
+    - artifacts/base_pipeline.pkl
+    - data/processed/X_test.csv
+    - data/processed/X_train.csv
+    - data/processed/y_test.csv
+    - data/processed/y_train.csv
+    - scripts/configure_and_fit_pipeline.py
+    outs:
+    - artifacts/best_model_pipeline.pkl
+  predict:
+    cmd: python scripts/prediction_pipeline.py
+    deps:
+    - artifacts/best_model_pipeline.pkl
+    - data/processed/X_test.csv
+    - data/processed/y_test.csv
+    - scripts/prediction_pipeline.py
+    outs:
+    - data/predictions
