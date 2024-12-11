@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/4838cfcc4cbc41e2938da6acb288d460/artifacts
+end_time: 1733850543011
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: 4838cfcc4cbc41e2938da6acb288d460
+run_name: gaudy-robin-407
+run_uuid: 4838cfcc4cbc41e2938da6acb288d460
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733850542934
+status: 3
+tags: []
+user_id: hp i7

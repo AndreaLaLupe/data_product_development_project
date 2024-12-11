@@ -19,12 +19,14 @@ stages:
     - scripts/configure_and_fit_pipeline.py
     outs:
     - artifacts/best_model_pipeline.pkl
+    - artifacts/model_results.json
   predict:
     cmd: python scripts/prediction_pipeline.py
     deps:
     - artifacts/best_model_pipeline.pkl
     - data/processed/X_test.csv
     - data/processed/y_test.csv
+    - artifacts/model_results.json 
     - scripts/prediction_pipeline.py
     outs:
     - data/predictions

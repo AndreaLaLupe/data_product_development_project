@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/339977424329165112/40fc2445252644e79718b5c730e91873/artifacts
+end_time: 1733858803846
+entry_point_name: ''
+experiment_id: '339977424329165112'
+lifecycle_stage: active
+run_id: 40fc2445252644e79718b5c730e91873
+run_name: XGBoost
+run_uuid: 40fc2445252644e79718b5c730e91873
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733858803743
+status: 3
+tags: []
+user_id: hp i7

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/847409d8f4144b9b9634d8e048a9ac4a/artifacts
+end_time: 1733859184723
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: 847409d8f4144b9b9634d8e048a9ac4a
+run_name: grandiose-kite-174
+run_uuid: 847409d8f4144b9b9634d8e048a9ac4a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733859184640
+status: 3
+tags: []
+user_id: hp i7

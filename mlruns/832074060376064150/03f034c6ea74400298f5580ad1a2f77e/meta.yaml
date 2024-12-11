@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/03f034c6ea74400298f5580ad1a2f77e/artifacts
+end_time: 1733859248660
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: 03f034c6ea74400298f5580ad1a2f77e
+run_name: rebellious-boar-90
+run_uuid: 03f034c6ea74400298f5580ad1a2f77e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733859248576
+status: 3
+tags: []
+user_id: hp i7

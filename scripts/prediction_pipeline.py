@@ -1,18 +1,17 @@
 """
-Pipeline de predicción: Realiza predicciones usando un modelo entrenado y 
-registra los resultados en MLflow.
+Este script carga un pipeline ya entrenado, realiza predicciones
+con datos de prueba y registra los resultados en MLflow.
 
-Este script carga un pipeline preentrenado y realiza predicciones sobre datos de prueba.
-Guarda las predicciones en un archivo CSV con una marca de tiempo y las registra como 
-artefacto en MLflow.
-
+Adicionalmente, muestra y registra los resultados de los modelos
+entrenados en MLflow.
 """
 
 import os
-import pickle
-from datetime import datetime
 import pandas as pd
+import pickle
 import mlflow
+import json
+from datetime import datetime
 
 # Configuración inicial
 PROJECT_PATH = os.path.abspath(os.path.join(os.getcwd()))
@@ -20,11 +19,13 @@ DATA_PROCESSED_PATH = os.path.join(PROJECT_PATH, "data", "processed")
 PREDICTIONS_PATH = os.path.join(PROJECT_PATH, "data", "predictions")
 ARTIFACTS_PATH = os.path.join(PROJECT_PATH, "artifacts")
 PIPELINE_PATH = os.path.join(ARTIFACTS_PATH, "best_model_pipeline.pkl")
+MODEL_RESULTS_PATH = os.path.join(ARTIFACTS_PATH, "model_results.json")
 
 # Crear carpeta de predicciones si no existe
 os.makedirs(PREDICTIONS_PATH, exist_ok=True)
 
-# Cargar pipeline
+
+# Funciones Utilitarias
 def cargar_pipeline(pipeline_path):
     """
     Carga el pipeline entrenado desde un archivo .pkl.
@@ -40,12 +41,10 @@ def cargar_pipeline(pipeline_path):
             pipeline = pickle.load(f)
         print("Pipeline cargado correctamente.")
         return pipeline
-    except FileNotFoundError as exc:
-        raise FileNotFoundError(
-            f"El archivo del pipeline no existe en: {pipeline_path}"
-        ) from exc
+    except FileNotFoundError:
+        raise FileNotFoundError(f"El archivo del pipeline no existe en: {pipeline_path}")
 
-# Cargar datos
+
 def cargar_datos_prueba(data_path):
     """
     Carga los datos de prueba desde la ruta especificada.
@@ -54,19 +53,17 @@ def cargar_datos_prueba(data_path):
         data_path (str): Ruta de los datos procesados.
 
     Returns:
-        tuple: DataFrames de x_test e y_test.
+        tuple: DataFrames de X_test e y_test.
     """
     try:
         x_test = pd.read_csv(os.path.join(data_path, "X_test.csv"))
         y_test = pd.read_csv(os.path.join(data_path, "y_test.csv"))
-        print(f"Datos de prueba cargados: x_test {x_test.shape}, y_test {y_test.shape}")
+        print(f"Datos de prueba cargados: X_test {x_test.shape}, y_test {y_test.shape}")
         return x_test, y_test
-    except FileNotFoundError as exc:
-        raise FileNotFoundError(
-            f"Error al cargar los datos de prueba: {exc}"
-        ) from exc
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Error al cargar los datos de prueba: {e}")
 
-# Guardar las predicciones
+
 def guardar_predicciones(predictions, true_labels, output_path):
     """
     Guarda las predicciones en un archivo CSV.
@@ -89,7 +86,7 @@ def guardar_predicciones(predictions, true_labels, output_path):
     print(f"Predicciones guardadas en: {output_file}")
     return output_file
 
-# Registrar en MLFlow
+
 def registrar_predicciones_mlflow(file_path):
     """
     Registra las predicciones en MLflow.
@@ -104,27 +101,70 @@ def registrar_predicciones_mlflow(file_path):
         mlflow.log_artifact(file_path, artifact_path="predictions")
         print("Predicciones registradas en MLflow.")
 
-# Función principal
+
+def registrar_modelos_mlflow(results_path):
+    """
+    Registra los resultados de los modelos entrenados en MLflow.
+
+    Args:
+        results_path (str): Ruta del archivo JSON con los resultados de los modelos.
+    """
+    if not os.path.exists(results_path):
+        raise FileNotFoundError(f"El archivo de resultados no existe en: {results_path}")
+
+    with open(results_path, "r", encoding="utf-8") as file:
+        results = json.load(file)
+
+    mlflow.set_tracking_uri("http://127.0.0.1:5000")
+    mlflow.set_experiment("Resultados_Modelos")
+
+    for model_name, model_data in results.items():
+        with mlflow.start_run(run_name=model_name):
+            # Log de métricas
+            mlflow.log_metric("f1_score", model_data["f1_score"])
+
+            # Log de hiperparámetros
+            if model_data["hyperparameters"]:
+                for param, value in model_data["hyperparameters"].items():
+                    mlflow.log_param(param, value)
+
+            # Log del modelo
+            model_path = model_data["model_path"]
+            mlflow.log_artifact(model_path, artifact_path="modelos")
+            print(f"Modelo {model_name} registrado en MLflow.")
+
+
+# Función Principal
 def main():
     """
     Función principal del script.
     """
-    print("Cargando el pipeline entrenado...")
+    # Registrar modelos en MLflow
+    print("\nRegistrando modelos en MLflow...")
+    registrar_modelos_mlflow(MODEL_RESULTS_PATH)
+
+    # Cargar pipeline entrenado
+    print("\nCargando el pipeline entrenado...")
     pipeline = cargar_pipeline(PIPELINE_PATH)
 
+    # Cargar datos de prueba
     print("\nCargando datos de prueba...")
     x_test, y_test = cargar_datos_prueba(DATA_PROCESSED_PATH)
 
+    # Realizar predicciones
     print("\nRealizando predicciones...")
     y_pred = pipeline.predict(x_test)
 
+    # Guardar predicciones
     print("\nGuardando predicciones en archivo...")
     output_file = guardar_predicciones(y_pred, y_test.values.ravel(), PREDICTIONS_PATH)
 
+    # Registrar predicciones en MLflow
     print("\nRegistrando predicciones en MLflow...")
     registrar_predicciones_mlflow(output_file)
 
     print("\nProceso completado con éxito.")
+
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/d71afc038219477584be5f5251a5fa9f/artifacts
+end_time: 1733858804951
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: d71afc038219477584be5f5251a5fa9f
+run_name: indecisive-hare-149
+run_uuid: d71afc038219477584be5f5251a5fa9f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733858804881
+status: 3
+tags: []
+user_id: hp i7

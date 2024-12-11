@@ -49,20 +49,28 @@ stages:
       size: 3547
     - path: scripts/configure_and_fit_pipeline.py
       hash: md5
-      md5: a6bae63a548d763cbdf239f871b00823
-      size: 7235
+      md5: 24344578be1ad04905a8d8a9687d3e7a
+      size: 9151
     outs:
     - path: artifacts/best_model_pipeline.pkl
       hash: md5
-      md5: 2b04ab420f214cc061c6a3eda302c7f8
-      size: 431196
+      md5: 5363191c415c5fb8048de52b03223bb2
+      size: 52841
+    - path: artifacts/model_results.json
+      hash: md5
+      md5: a319d308f05e3cf730cbb92f2776d1fd
+      size: 910
   predict:
     cmd: python scripts/prediction_pipeline.py
     deps:
     - path: artifacts/best_model_pipeline.pkl
       hash: md5
-      md5: 2b04ab420f214cc061c6a3eda302c7f8
-      size: 431196
+      md5: 5363191c415c5fb8048de52b03223bb2
+      size: 52841
+    - path: artifacts/model_results.json
+      hash: md5
+      md5: a319d308f05e3cf730cbb92f2776d1fd
+      size: 910
     - path: data/processed/X_test.csv
       hash: md5
       md5: 9161e3caf0aaf77e4480b63d35136e70
@@ -73,11 +81,11 @@ stages:
       size: 895
     - path: scripts/prediction_pipeline.py
       hash: md5
-      md5: 0aba27eae97941e5f4c157f55bd3464d
-      size: 4118
+      md5: a67db3fe2c36f683ac510a4dd10e37ee
+      size: 5482
     outs:
     - path: data/predictions
       hash: md5
-      md5: d9c219c6393b7e81d1a3b071f70fc414.dir
+      md5: 451c92bd9d9b35d07992f6c6ce8f1bf8.dir
       size: 1508
       nfiles: 1
