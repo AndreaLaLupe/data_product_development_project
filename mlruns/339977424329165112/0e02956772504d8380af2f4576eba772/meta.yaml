@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/339977424329165112/0e02956772504d8380af2f4576eba772/artifacts
+end_time: 1733904771269
+entry_point_name: ''
+experiment_id: '339977424329165112'
+lifecycle_stage: active
+run_id: 0e02956772504d8380af2f4576eba772
+run_name: Decision Tree
+run_uuid: 0e02956772504d8380af2f4576eba772
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733904771072
+status: 3
+tags: []
+user_id: hp i7

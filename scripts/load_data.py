@@ -9,12 +9,13 @@ Funciones:
       y balancea las clases en una proporción 2:1.
 """
 
+import os
 import pandas as pd
-
 
 def load_and_balance_data(file_path: str, balanced_file_path: str) -> pd.DataFrame:
     """
-    Carga los datos desde un archivo CSV, valida su estructura inicial y balancea las clases en una proporción 2:1.
+    Carga los datos desde un archivo CSV, valida su estructura inicial y balancea las 
+    clases en una proporción 2:1.
 
     Args:
         file_path (str): Ruta del archivo CSV.
@@ -51,11 +52,12 @@ def load_and_balance_data(file_path: str, balanced_file_path: str) -> pd.DataFra
 
         # Ajustar el tamaño de la clase negativa a 2 veces la clase positiva
         n_samples_negativa = 2 * data_positiva.shape[0]
-        data_negativa_balanceada = data_negativa.sample(n=n_samples_negativa, random_state=2024, replace=False)
+        data_negativa_balanceada = data_negativa.sample(n=n_samples_negativa,
+            random_state=2024, replace=False)
 
         # Combinar datos balanceados
         data_balanceada = pd.concat([data_positiva, data_negativa_balanceada])
-        data_balanceada = data_balanceada.sample(frac=1, random_state=2024).reset_index(drop=True)  # Mezclar aleatoriamente
+        data_balanceada = data_balanceada.sample(frac=1, random_state=2024).reset_index(drop=True)
 
         print(f"\nTamaño final del dataset balanceado: {data_balanceada.shape}")
         print("\nDistribución de la variable objetivo (después del balanceo):")
@@ -73,3 +75,23 @@ def load_and_balance_data(file_path: str, balanced_file_path: str) -> pd.DataFra
     except Exception as e:
         print(f"Error: {e}")
         raise e
+
+
+def main():
+    """
+    Función principal para cargar y balancear datos desde un archivo CSV.
+    """
+    # Definir rutas
+    project_path = os.getcwd()
+    input_file_path = os.path.join(project_path, "data", "raw", "creditcard.csv")
+    output_file_path = os.path.join(project_path, "data", "interim", "creditcard_balanced.csv")
+
+    # Crear directorio de salida si no existe
+    os.makedirs(os.path.dirname(output_file_path), exist_ok=True)
+
+    # Ejecutar el flujo de carga y balanceo
+    load_and_balance_data(input_file_path, output_file_path)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/82355e67e6e744c484da481971001913/artifacts
+end_time: 1733859438664
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: 82355e67e6e744c484da481971001913
+run_name: upset-chimp-688
+run_uuid: 82355e67e6e744c484da481971001913
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733859438585
+status: 3
+tags: []
+user_id: hp i7

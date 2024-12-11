@@ -1,4 +1,17 @@
 stages:
+  load_and_balance_data:
+    cmd: python scripts/load_data.py data/raw/creditcard.csv data/interim/creditcard_balanced.csv
+    deps:
+    - data/raw/creditcard.csv
+    - scripts/load_data.py
+    outs:
+    - data/interim/creditcard_balanced.csv
+  configuration_file:
+    cmd: python scripts/configuration_file.py
+    deps:
+    - scripts/configuration_file.py
+    outs:
+    - config/pipeline.cfg
   create_features:
     cmd: python scripts/create_features_and_base_pipeline.py
     deps:
@@ -19,12 +32,14 @@ stages:
     - scripts/configure_and_fit_pipeline.py
     outs:
     - artifacts/best_model_pipeline.pkl
+    - artifacts/model_results.json
   predict:
-    cmd: python scripts/prediction_pipeline.py
+    cmd: python scripts/predict_pipeline.py
     deps:
     - artifacts/best_model_pipeline.pkl
     - data/processed/X_test.csv
     - data/processed/y_test.csv
-    - scripts/prediction_pipeline.py
+    - artifacts/model_results.json
+    - scripts/predict_pipeline.py
     outs:
     - data/predictions

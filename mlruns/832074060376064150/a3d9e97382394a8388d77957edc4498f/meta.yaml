@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/a3d9e97382394a8388d77957edc4498f/artifacts
+end_time: 1733859104889
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: a3d9e97382394a8388d77957edc4498f
+run_name: nervous-yak-795
+run_uuid: a3d9e97382394a8388d77957edc4498f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733859104813
+status: 3
+tags: []
+user_id: hp i7
