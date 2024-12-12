@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/832074060376064150/876ee6bd8f614f428e891f3b9e3e92fb/artifacts
+end_time: 1734038267848
+entry_point_name: ''
+experiment_id: '832074060376064150'
+lifecycle_stage: active
+run_id: 876ee6bd8f614f428e891f3b9e3e92fb
+run_name: SVC
+run_uuid: 876ee6bd8f614f428e891f3b9e3e92fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734038267754
+status: 3
+tags: []
+user_id: hp i7

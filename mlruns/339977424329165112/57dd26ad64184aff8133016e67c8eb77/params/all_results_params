@@ -1,0 +1,1 @@
+[{"C": 0.1, "kernel": "linear"}, {"C": 0.1, "kernel": "rbf"}, {"C": 1, "kernel": "linear"}, {"C": 1, "kernel": "rbf"}, {"C": 10, "kernel": "linear"}, {"C": 10, "kernel": "rbf"}]

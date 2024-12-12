@@ -11,6 +11,7 @@ import os
 import json
 import pickle
 import pandas as pd
+import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import f1_score, classification_report
@@ -24,11 +25,14 @@ from xgboost import XGBClassifier
 PROJECT_PATH = os.path.abspath(os.path.join(os.getcwd()))
 DATA_PROCESSED_PATH = os.path.join(PROJECT_PATH, "data", "processed")
 ARTIFACTS_PATH = os.path.join(PROJECT_PATH, "artifacts")
+MODELS_PATH = os.path.join(PROJECT_PATH, "models")
 PIPELINE_PATH = os.path.join(ARTIFACTS_PATH, "base_pipeline.pkl")
 FINAL_PIPELINE_PATH = os.path.join(ARTIFACTS_PATH, "best_model_pipeline.pkl")
 RESULTS_FILE_PATH = os.path.join(ARTIFACTS_PATH, "model_results.json")
 
 os.makedirs(ARTIFACTS_PATH, exist_ok=True)
+os.makedirs(MODELS_PATH, exist_ok=True)
+
 
 
 def load_data():
@@ -105,7 +109,7 @@ def train_model_with_hyperparameters(model_name, model, param_grid, x_train, y_t
         grid_search.fit(x_train, y_train.values.ravel())
         return grid_search.best_estimator_, grid_search.best_params_
     model.fit(x_train, y_train.values.ravel())
-    return model, None
+    return model, None, grid_search
 
 
 def train_and_tune_models(x_train, y_train, x_test, y_test, models_with_params):
@@ -127,27 +131,29 @@ def train_and_tune_models(x_train, y_train, x_test, y_test, models_with_params):
     for model_name, model in models_with_params.items():
         print(f"\nEntrenando modelo: {model_name}")
         param_grid = get_hyperparameter_grid(model_name)
-        best_model, best_params = train_model_with_hyperparameters(
-            model_name, model, param_grid, x_train, y_train
+
+        grid_search = GridSearchCV(
+            model, param_grid, cv=3, scoring="f1", n_jobs=-1, return_train_score=True
         )
 
-        y_pred = best_model.predict(x_test)
+        grid_search.fit(x_train, y_train.values.ravel())
+        y_pred = grid_search.best_estimator_.predict(x_test)
         f1 = f1_score(y_test, y_pred)
-        print(f"F1-Score para {model_name}: {f1}")
 
-        model_file = os.path.join(
-            ARTIFACTS_PATH, f"{model_name.replace(' ', '_').lower()}.pkl"
-        )
+        # Guardar modelo entrenado
+        model_file = os.path.join(MODELS_PATH, f"{model_name.replace(' ', '_').lower()}.pkl")
         with open(model_file, "wb") as file:
-            pickle.dump(best_model, file)
+            pickle.dump(grid_search.best_estimator_, file)
 
         results[model_name] = {
+            "all_results": grid_search.cv_results_,
+            "best_params": grid_search.best_params_,
+            "best_score": grid_search.best_score_,
             "f1_score": f1,
-            "hyperparameters": best_params,
-            "model_path": model_file
+            "model_path": model_file  
         }
-    return results
 
+    return results
 
 def save_results(results):
     """
@@ -156,8 +162,24 @@ def save_results(results):
     Args:
         results (dict): Resultados de los modelos.
     """
+    def make_serializable(obj):
+        """
+        Convierte un objeto en uno serializable para JSON.
+        """
+        if isinstance(obj, dict):
+            return {key: make_serializable(value) for key, value in obj.items()}
+        if isinstance(obj, (list, tuple)):
+            return [make_serializable(value) for value in obj]
+        if isinstance(obj, (pd.DataFrame, pd.Series)):
+            return obj.to_dict()
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return obj  # No es necesario el 'else'
+
+    serializable_results = make_serializable(results)
+
     with open(RESULTS_FILE_PATH, "w", encoding="utf-8") as file:
-        json.dump(results, file)
+        json.dump(serializable_results, file, indent=4)
     print(f"\nResultados guardados en {RESULTS_FILE_PATH}")
 
 
